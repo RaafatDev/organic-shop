@@ -97,6 +97,14 @@ export class ShoppingCartService {
   }
 
   async addToCart(product: Product) {
+    this.updateItemQuantity(product, 1);
+  }
+
+  async removeFromCart(product: Product) {
+    this.updateItemQuantity(product, -1);
+  }
+
+  private async updateItemQuantity(product: Product, change: number) {
     let cartId = await this.getOrCreateCartId();
     let item$ = this.getItem(cartId, product.id);
 
@@ -109,7 +117,7 @@ export class ShoppingCartService {
 
           // item$.set(
           item$.update(
-            { product: product, quantity: data.quantity + 1 }
+            { product: product, quantity: data.quantity + change }
             // { merge: true }
           );
         } else {
