@@ -29,7 +29,8 @@ export class ShoppingCartService {
         // switchMap(items => {
         map(items => {
           return items.map(item => {
-            return item.payload.doc.data();
+            // console.log("inside the getCart", item.payload.doc.data());
+            return item.payload.doc.data() as ShoppingCartItem;
           });
         })
       );
