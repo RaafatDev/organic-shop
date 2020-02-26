@@ -18,12 +18,15 @@
         <a class="nav-link" routerLink="/shopping-cart"
           >Shopping Cart
 
-          <span class="badge badge-warning badge-pill">{{
-            shoppingCartItemCount
-          }}</span>
+          <span
+            class="badge badge-warning badge-pill"
+            *ngIf="cart$ | async as cart"
+            >{{ cart.totalItemsCount }}</span
+          >
         </a>
       </li>
 
+      <!-- <div>{{ cart$ | async | json }}</div> -->
       <ng-template #anonymousUser>
         <li class="nav-item">
           <a class="nav-link" routerLink="login">Login</a>

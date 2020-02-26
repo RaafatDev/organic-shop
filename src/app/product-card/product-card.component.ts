@@ -28,39 +28,14 @@ export class ProductCardComponent implements OnInit {
   getQuantity() {
     if (!this.shoppingCart) return 0;
 
-    // let item;
-
-    // this.shoppingCart.map(oneItem => {
-    //   if (oneItem.product.id === this.product.id) {
-
-    //     item = oneItem;
-    //   }
-    // });
-    let item = this.shoppingCart.filter(
+    //! #################3
+    //! #################3
+    // let item = this.shoppingCart.filter(
+    //! #########
+    let item = this.shoppingCart.items.filter(
       oneItem => oneItem.product.id === this.product.id
     )[0];
 
-    // console.log("item", item);
-
     return item ? item.quantity : 0;
   }
-
-  //! for reserve before the test !!!!!!!!!
-  // getQuantity() {
-  //   console.log("shopping cart ", this.shoppingCart);
-
-  //   if (!this.shoppingCart) return 0;
-
-  //   let item;
-  //   this.shoppingCart.map(cart => {
-  //     let productMapId = cart.payload.doc.data().product.id;
-  //     // console.log("test", cart.payload.doc.data().quantity);
-
-  //     if (productMapId === this.product.id) {
-  //       item = cart.payload.doc.data();
-  //     }
-  //   });
-
-  //   return item ? item.quantity : 0;
-  // }
 }

@@ -3,6 +3,8 @@ import { Component, OnInit } from "@angular/core";
 import { AuthService } from "../auth.service";
 import { AppUser } from "../models/app-user";
 import { ShoppingCartService } from "../shopping-cart.service";
+import { Observable } from "rxjs";
+import { ShoppingCart } from "../models/shopping-cart";
 
 @Component({
   selector: "bs-navbar",
@@ -11,7 +13,8 @@ import { ShoppingCartService } from "../shopping-cart.service";
 })
 export class BsNavbarComponent implements OnInit {
   appUser: AppUser;
-  shoppingCartItemCount: number;
+  // shoppingCartItemCount: number;
+  cart$: Observable<ShoppingCart>;
 
   constructor(
     private auth: AuthService,
@@ -21,18 +24,15 @@ export class BsNavbarComponent implements OnInit {
   async ngOnInit() {
     this.auth.appUser$.subscribe(appUser => (this.appUser = appUser));
 
-    let cart$ = await this.shoppingCartService.getCart();
-    cart$.subscribe(items => {
-      this.shoppingCartItemCount = 0;
-      items.map(cart => {
-        // console.log(typeof cart.quantity);
-        // console.log(typeof this.shoppingCartItemCount);
+    this.cart$ = await this.shoppingCartService.getCart();
+    // console.log("the Cart$ in the bs-navbarComponent.ts ", this.cart$);
 
-        // console.log(cart.quantity);
-        this.shoppingCartItemCount += cart.quantity;
-        // console.log(this.shoppingCartItemCount);
-      });
-    });
+    // cart$.subscribe(items => {
+    //   this.shoppingCartItemCount = 0;
+    //   items.map(cart => {
+    //     this.shoppingCartItemCount += cart.quantity;
+    //   });
+    // });
   }
 
   logout() {

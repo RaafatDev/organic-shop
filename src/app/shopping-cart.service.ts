@@ -4,6 +4,7 @@ import { Product } from "./models/product";
 import { take, map, switchMap } from "rxjs/operators";
 import { ShoppingCartItem } from "./models/shopping-cart-item";
 import { Observable, of } from "rxjs";
+import { ShoppingCart } from "./models/shopping-cart";
 
 @Injectable({
   providedIn: "root"
@@ -30,52 +31,19 @@ export class ShoppingCartService {
         map(items => {
           return items.map(item => {
             // console.log("inside the getCart", item.payload.doc.data());
-            return item.payload.doc.data() as ShoppingCartItem;
+            // return item.payload.doc.data() as ShoppingCartItem;
+            let items = item.payload.doc.data() as ShoppingCartItem;
+            // console.log({ items });
+
+            // return new ShoppingCart(items);
+            return items;
           });
+        }),
+        map(x => {
+          return new ShoppingCart(x);
         })
       );
   }
-
-  //! for reserve before the test !!!!!!!
-  // async getCart() {
-  //   let cartId = await this.getOrCreateCartId();
-
-  //   return (
-  //     this.db
-  //       .collection("shopping-carts")
-  //       .doc(cartId)
-  //       // .collection("items")
-  //       .snapshotChanges()
-  //       // .()
-  //       // .get()
-  //       .pipe(
-  //         switchMap(col => {
-  //           let collectionId = col.payload.id;
-  //           console.log("collectionId", collectionId);
-
-  //           // return;
-  //           let subColl$ = this.db
-  //             .collection("shopping-carts")
-  //             .doc(cartId)
-  //             .collection("items")
-  //             .snapshotChanges();
-
-  //           // console.log("sub", subColl$);
-
-  //           return subColl$;
-  //           // return collectionId;
-  //         })
-  //         // map(subColl => {
-  //         //   console.log(
-  //         //     "the sub collection in Service",
-  //         //     subColl[0].payload.doc.data()
-  //         //   );
-
-  //         //   return subColl;
-  //         // })
-  //       )
-  //   );
-  // }
 
   private getItem(cartId: string, productId: string) {
     return this.db
