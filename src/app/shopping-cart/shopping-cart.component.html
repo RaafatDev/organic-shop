@@ -1,16 +1,18 @@
 <h1>Shopping Cart</h1>
-<ng-container *ngIf="cart$ | async as cart">
+<!-- <ng-container *ngIf="cart$ | async as cart"> -->
+<div class="row col-10" *ngIf="cart$ | async as cart">
   <p>You have {{ cart.totalItemsCount }} items in your shopping cart</p>
   <table class="table">
     <thead>
       <tr>
+        <th></th>
         <th>
           Product
         </th>
-        <th>
+        <th class="text-center" style="width: 230px;">
           Quantity
         </th>
-        <th>Price</th>
+        <th class="text-right" style="width: 200px;">Price</th>
       </tr>
     </thead>
     <tbody>
@@ -18,13 +20,26 @@
       <!-- <tr *ngFor="let item of cart.items"> -->
       <tr *ngFor="let item of cart.items">
         <!-- <tr *ngFor="let c of cart"> -->
+        <td>
+          <div
+            [style.backgroundImage]="'url(' + item.product.imageUrl + ')'"
+            class="thumbnail"
+          ></div>
+        </td>
         <td>{{ item.product.title }}</td>
-        <td>{{ item.quantity }}</td>
+
+        <td>
+          <app-product-quantity
+            [product]="item.product"
+            [shopping-cart]="cart"
+          ></app-product-quantity>
+        </td>
+        <!-- <td>{{ item.quantity }}</!-->
         <!-- <td>{{ item.product.price }}</td> -->
         <!-- <td>{{ item.name }}</td> -->
         <!-- <td>{{ item.product.price * item.quantity }}</td> -->
 
-        <td>{{ item.totalPrice | currency: "EUR" }}</td>
+        <td class="text-right">{{ item.totalPrice | currency: "EUR" }}</td>
         <!-- <pre> {{ item | json }} </pre> -->
         <!-- <td></td> -->
       </tr>
@@ -34,10 +49,14 @@
       <tr>
         <th></th>
         <th></th>
-        <th>
+        <th></th>
+        <th class="text-right">
           {{ cart.totalPrice | currency: "EUR" }}
         </th>
       </tr>
     </tfoot>
   </table>
-</ng-container>
+  <button (click)="clearCart()" class="btn btn-danger btn-sm">
+    Clear Shopping Cart
+  </button>
+</div>

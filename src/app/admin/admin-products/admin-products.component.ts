@@ -24,11 +24,11 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
         products => (this.filteredProducts = this.products = products)
       );
 
-    console.log("the filtered products", this.products);
+    // console.log("the filtered products", this.products);
   }
 
   filter(query: string) {
-    console.log(query);
+    // console.log(query);
     this.filteredProducts = query
       ? this.products.filter(p =>
           p.title.toLowerCase().includes(query.toLowerCase())

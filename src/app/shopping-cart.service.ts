@@ -12,12 +12,6 @@ import { ShoppingCart } from "./models/shopping-cart";
 export class ShoppingCartService {
   constructor(private db: AngularFirestore) {}
 
-  private create() {
-    return this.db.collection("shopping-carts").add({
-      dateCreated: new Date().getTime()
-    });
-  }
-
   async getCart() {
     let cartId = await this.getOrCreateCartId();
 
@@ -45,6 +39,51 @@ export class ShoppingCartService {
       );
   }
 
+  async addToCart(product: Product) {
+    this.updateItemQuantity(product, 1);
+  }
+
+  async removeFromCart(product: Product) {
+    this.updateItemQuantity(product, -1);
+  }
+
+  async clearCart() {
+    let cartId = await this.getOrCreateCartId();
+    // console.log({ cartId });
+    // let itemsInCart = this.db
+    //   .collection("shopping-carts")
+    //   .doc(cartId)
+    //   .get();
+
+    // itemsInCart.subscribe(x => {
+    //   console.log({ x });
+    // });
+    // console.log({ itemsInCart });
+    let items = this.db
+      .collection("shopping-carts")
+      .doc(cartId)
+      .collection("items");
+
+    items
+      .snapshotChanges()
+      .pipe(take(1))
+      .subscribe(itemsInCart => {
+        // console.log({ itemsInCart });
+
+        itemsInCart.map(item => {
+          let itemId = item.payload.doc.id;
+          // console.log("the ID for items in the Cart  ", itemId);
+          items.doc(itemId).delete();
+        });
+      });
+  }
+
+  private create() {
+    return this.db.collection("shopping-carts").add({
+      dateCreated: new Date().getTime()
+    });
+  }
+
   private getItem(cartId: string, productId: string) {
     return this.db
       .collection("shopping-carts")
@@ -63,14 +102,6 @@ export class ShoppingCartService {
     localStorage.setItem("cartId", result.id);
 
     return result.id;
-  }
-
-  async addToCart(product: Product) {
-    this.updateItemQuantity(product, 1);
-  }
-
-  async removeFromCart(product: Product) {
-    this.updateItemQuantity(product, -1);
   }
 
   private async updateItemQuantity(product: Product, change: number) {

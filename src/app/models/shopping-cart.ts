@@ -1,37 +1,33 @@
 import { ShoppingCartItem } from "./shopping-cart-item";
-
-// export interface ShoppingCart {
-//   items: ShoppingCartItem[];
-// }
+import { Product } from "./product";
 
 export class ShoppingCart {
-  // items: ShoppingCartItem[];
   items: ShoppingCartItem[] = [];
-  items2: ShoppingCartItem[] = [];
 
-  constructor(public shoppingCartItems: ShoppingCartItem[]) {
+  constructor(private shoppingCartItems: ShoppingCartItem[]) {
     this.shoppingCartItems.map(item => {
       if (item.quantity > 0) {
         this.items.push(new ShoppingCartItem(item.product, item.quantity));
       }
     });
-
-    // console.log("item 222222222222");
-    // console.log(this.items2);
-    // console.log("item 222222222222");
-
-    // console.log(this.items);
   }
-  // constructor(public items: { [key: string]: ShoppingCartItem }) {}
 
-  get products() {
-    let productsIn = this.shoppingCartItems.filter(item => {
-      return item.quantity > 0;
-    });
+  getQuantity(product: Product) {
+    let item = this.shoppingCartItems.filter(
+      oneItem => oneItem.product.id === product.id
+    )[0];
 
-    console.log({ productsIn });
-    return productsIn;
+    return item ? item.quantity : 0;
   }
+
+  // get products() {
+  //   let productsIn = this.shoppingCartItems.filter(item => {
+  //     return item.quantity > 0;
+  //   });
+
+  //   console.log({ productsIn });
+  //   return productsIn;
+  // }
 
   get totalPrice() {
     let sum = 0;
