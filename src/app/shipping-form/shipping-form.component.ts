@@ -6,6 +6,13 @@ import { OrderService } from "../order.service";
 import { Order } from "../models/order";
 import { ShoppingCart } from "../models/shopping-cart";
 
+// interface Shipping {
+//   name: string;
+//   addressLine1: string;
+//   addressLine2: string;
+//   city: string;
+// }
+
 @Component({
   selector: "shipping-form",
   templateUrl: "./shipping-form.component.html",
@@ -13,7 +20,9 @@ import { ShoppingCart } from "../models/shopping-cart";
 })
 export class ShippingFormComponent implements OnInit, OnDestroy {
   @Input("cart") cart: ShoppingCart;
-  shipping = {};
+  shipping: any = {};
+  // shipping: Shipping | {} = {};
+  // shipping: Shipping;
   userSubscription: Subscription;
   userId: string;
 
