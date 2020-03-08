@@ -1,17 +1,19 @@
 <h1>Shopping Cart</h1>
 <!-- <ng-container *ngIf="cart$ | async as cart"> -->
 <div class="row col-10" *ngIf="cart$ | async as cart">
-  <p>
-    You have {{ cart.totalItemsCount }} items in your shopping cart.
+  <div>
+    <p>You have {{ cart.totalItemsCount }} items in your shopping cart.</p>
+  </div>
 
+  <div class="ml-auto">
     <button
       *ngIf="cart.items.length"
       (click)="clearCart()"
-      class="btn btn-light btn-sm"
+      class="btn btn-light btn-sm float-right"
     >
       Clear Shopping Cart
     </button>
-  </p>
+  </div>
   <table class="table">
     <thead>
       <tr>
